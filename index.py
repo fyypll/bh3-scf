@@ -9,6 +9,7 @@ import json
 import random
 import string
 import time
+import datetime
 import uuid
 import os
 
@@ -169,7 +170,8 @@ class Sign(Base):
         for i in range(len(info_list)):
             # 本月已经签到天数
             total_sign_day = info_list[i]['data']['sign']['sign_cnt']
-            today = int(info_list[i]['data']['sign']['sign_cnt']) - 1
+            # 当天签到日期
+            today = datetime.datetime.now().strftime("%Y-%m-%d")
             # 签到福利列表
             awards = info_list[i]['data']['sign']['list']
             uid = str(self._uid_list[i]).replace(str(self._uid_list[i])[2:7], '*****', 1)
@@ -189,8 +191,8 @@ class Sign(Base):
             }
             # 每日首次签到取到的是1，重复签到取到的是0
             if int(awards[total_sign_day]['status']) == 0:
-                messgae['award_name'] = awards[today]['name']
-                messgae['award_cnt'] = awards[today]['cnt']
+                messgae['award_name'] = awards[int(total_sign_day) - 1]['name']
+                messgae['award_cnt'] = awards[int(total_sign_day) - 1]['cnt']
                 messgae['status'] = f'角色 {i + 1} 号, 你已经签到过了哦'
                 message_list.append(self.message.format(**messgae))
                 continue
