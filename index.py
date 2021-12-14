@@ -250,7 +250,6 @@ def main_handler(event, context):
     cookie_list = COOKIE.split('#')
     log.info(f'检测到共配置了 {len(cookie_list)} 个帐号')
     for i in range(len(cookie_list)):
-        Sign(cookie_list[i]).run()
         log.info(f'准备为 NO.{i + 1} 账号签到...')
         try:
             msg = f'NO.{i + 1} 账号:{Sign(cookie_list[i]).run()}'
